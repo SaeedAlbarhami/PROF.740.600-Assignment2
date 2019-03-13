@@ -1,0 +1,151 @@
+---
+title: "Saeed Thabit_Prof740_Assignment#2"
+author: "Saeed"
+date: "March 10, 2019"
+output:
+  pdf_document:
+    toc: yes
+    toc_depth: '5'
+    df_print: paged
+  html_document:
+    highlight: pygments
+    number_sections: yes
+    self_contained: false
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+    df_print: paged
+  word_document:
+    toc: yes
+    toc_depth: '5'
+---
+
+<style>
+h1,h2,h3,h4 {
+  font-family: 'Raleway', sans-serif;
+}
+h1 {
+  background-color: #FF6400;
+  color: white;
+}
+</style>
+
+```{r pressure, echo=FALSE,fig.cap="", out.width = '100%'}
+knitr::include_graphics("logo.png", auto_pdf = getOption("knitr.graphics.auto_pdf", FALSE), dpi = NULL)
+```
+
+\newpage
+# BACKGROUND {-}
+The purpose of this assignment is to evaluate Association Rules using A-priori, FP tree and FP Growth algorithms.
+
+
+
+# QUESTION 1: (40 Points) {-}
+
+You are given the transaction data shown in the Table below from a fast food restaurant. There are 9 distinct transactions (order:1–order:9) and each transaction involves between 2 and 4 meal items.    
+
+There is a total of 5 meal items that are involved in the transactions. For simplicity we assign the meal items short names (M1 – M5) rather than the full descriptive names (e.g., Big Mac).    
+
+
+For all of the parts above the minimum support is 2/9 (.222) and the minimum confidence is 7/9(.777). 
+
+
+## a. Apply the A-priori algorithm to the dataset of transactions and identify all frequent k-itemsets. {-}
+
+Show all of your work. You must show candidates but can cross them off to show the ones that pass the minimum support threshold. 
+
+**Note:** 
+^[if a candidate itemset is pruned because it violates the A-priori property, you must indicate that it fails for this reason and not just because it does not achieve the necessary support count (i.e., in these cases there is no need to actually compute the support count). So, explicitly tag the itemsets that are pruned due to violation of the A-priori property].
+
+### Solution min_sup = 2/9 (.222), min_conf= 7/9(.777)    {-}
+```{r echo=FALSE, out.width = '100%'}
+knitr::include_graphics("apriori.png", auto_pdf = getOption("knitr.graphics.auto_pdf", FALSE), dpi = NULL)
+```
+    
+^[The fourth-itemset is not possible; therefore, the algorithm ends here].      
+
+
+## b. Find all strong association rules of the form: {X, Y} => {Z} and note their confidence values. {-}
+
+^[The answer is not 0 so you should have at least one frequent 3-frequent itemset].
+
+
+### Solution min_sup = 2/9 (.222), min_conf= 7/9(.777)    {-}
+
+**Association rules are considered strong if they meet the minimum confidence(77.7%) and support(22.2%).**    
+
+We can calculate confidence of the rule {X, Y} & {Z} using the following formula:
+
+Here we consider the 3-itemset identified earlier:    
+```
+Confidence(X & Y => Z) = #of existence X,Y & Z divided by #of existence X & Y
+```    
+> For each frequent itemset “l”, generate all nonempty subsets of l. 
+> For every nonempty subset s of l, if support_count(l) / support_count(s) >= min_conf where min_conf is minimum confidence threshold.
+
+```{r echo=FALSE, out.width = '80%'}
+knitr::include_graphics("confidence.png", auto_pdf = getOption("knitr.graphics.auto_pdf", FALSE), dpi = NULL)
+```
+    
+All the following association rules are considered strong because they meet the minimum confidence and support which was set at 77.7% & 22.2%.    
+
+**M1 & M5 =>  M2 - confidence=100%**      
+**M2 & M5 =>  M1 - confidence=100%**     
+
+\newpage    
+
+# QUESTION 2:(20 points) {-}
+The algorithm that we used to do association rule mining is the A-priori algorithm This algorithm is efficient because it relies on and exploits the A-priori property.
+
+ 
+##  What is the A-priori property? {-}
+
+### Solution  {-}
+The Apriori property state that if an itemset is frequent then all of its subsets must also be frequent. 
+
+# QUESTION 3:(40 points) {-}
+ A database has five transactions. Let min_sup=60% and  min_conf=80%.
+ 
+ 
+## a) Find all frequent itemsets using A priori {-}
+
+### Solution - Apriori Algorithm(min_sup=60% and  min_conf=80%)    {-}
+```{r echo=FALSE,fig.cap="", out.width = '100%'}
+knitr::include_graphics("apriori3.png", auto_pdf = getOption("knitr.graphics.auto_pdf", FALSE), dpi = NULL)
+```
+
+    
+## b) Find all frequent itemsets using FP-growth    {-}
+(Hint: FP tree construction, Conditional pattern base, conditional tree, and frequent pattern)    
+
+### Solution FP-growth Algorithm(min_sup=60% and  min_conf=80%)   {-}
+```{r echo=FALSE,fig.cap="", out.width = '100%'}
+knitr::include_graphics("fptree.png", auto_pdf = getOption("knitr.graphics.auto_pdf", FALSE), dpi = NULL)
+```
+
+\newpage
+## c) List all the strong association rules (with support (s) and confidence (c)) ONLY from A-priori algorithm. Discuss the association between the items. {-}
+
+### Solution Strong Association Rules(min_sup=60% and  min_conf=80%)   {-}
+
+**Association rules are considered strong if they meet the minimum confidence(80%) and support(60%)**    
+
+We can calculate confidence of the rule {X} => {Y} using the following formula:
+```
+Confidence(X => Y) = #of existence X,Y divided by #of existence X 
+```      
+
+> For each frequent itemset “l”, generate all nonempty subsets of l.    
+> For every nonempty subset s of l, if support_count(l) / support_count(s) >= min_conf where min_conf is minimum confidence threshold.
+
+All the following association rules are considered strong because they meet the minimum confidence(80%) and support(60%)       
+
+
+**{K & O} => {E} [Support= 0.6, Confidence=100%].**    
+**{E & O} => {K} [Support: 0.6, Confidence=100%].**  
+
+
+*This means that if a customer buys two out of the three possible items, there is good reason to believe the customer will also buy a third item. *
+
+
+^[When an item appears multiple times in the same itemset, the frequent item is count only one time). For example: Item O=3].
